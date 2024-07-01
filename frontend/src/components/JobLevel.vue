@@ -1,9 +1,9 @@
 <template>
-  <div
-    v-if="this.$store.getters.lodestoneData.Jobs[this.initial]"
-    class="job-level text-center fw-lighter user-select-none tt"
-  >
+  <div v-if="this.jobExists" class="job-level text-center user-select-none tt">
+    <!-- Tooltip -->
     <span class="tt-text">{{ title }}</span>
+
+    <!-- Icon -->
     <span
       :class="{
         'job-type-tank': type == 'tank',
@@ -14,20 +14,23 @@
       }"
       ><i :class="iconClass"></i>
     </span>
+
     <br />
-    <span v-if="this.$store.getters.lodestoneData.Jobs[this.initial].Level == 0" class="text-secondary">-</span>
-    <span v-else-if="this.$store.getters.lodestoneData.Jobs[this.initial].Level == 90" class="fw-bold">
-      {{ this.$store.getters.lodestoneData.Jobs[this.initial].Level }}
+
+    <!-- Level -->
+    <span v-if="!this.jobUnlocked" class="text-secondary">-</span>
+    <span v-else :class="{'fw-bolder': this.isMaxLevel}">
+      {{ this.currentLevel }}
     </span>
-    <span
-      v-else-if="this.$store.getters.lodestoneData.Jobs[this.initial].Level == 80 && this.initial == 'blu'"
-      class="fw-bold"
-    >
-      {{ this.$store.getters.lodestoneData.Jobs[this.initial].Level }}
-    </span>
-    <span v-else>
-      {{ this.$store.getters.lodestoneData.Jobs[this.initial].Level }}
-    </span>
+
+    <!-- Progress -->
+    <div v-if="this.jobUnlocked && !this.isMaxLevel" class="job-level-progress">
+      <div
+        class="job-level-progress-bar"
+        :style="'width: ' + this.levelProgressPercentage + '%'"
+      ></div>
+    </div>
+
   </div>
 </template>
 
@@ -36,28 +39,38 @@
   float: left;
   margin-right: 10px;
   margin-top: 5px;
-  margin-bottom: 5px;
   width: 22px;
 }
 
+.job-level-progress {
+  height: 1px;
+  border-right: 1px solid var(--bs-body-color);
+}
+
+.job-level-progress-bar {
+  height: 1px;
+  width: 100%;
+  border-bottom: 1px solid var(--bs-body-color);
+}
+
 .job-type-tank {
-  color: #9dd1ff;
+  color: var(--xt-tank-color);
 }
 
 .job-type-healer {
-  color: #a6ff93;
+  color: var(--xt-healer-color);
 }
 
 .job-type-dps {
-  color: #ff8f8f;
+  color: var(--xt-dps-color);
 }
 
 .job-type-gatherer {
-  color: #ffd99d;
+  color: var(--xt-gatherer-color);
 }
 
 .job-type-crafter {
-  color: #bdaaff;
+  color: var(--xt-crafter-color);
 }
 </style>
 
@@ -65,6 +78,8 @@
 export default {
   data() {
     return {
+      maxLevel: 100,
+      maxLevelBlue: 80,
       iconClass: "icon-job-" + this.initial,
     };
   },
@@ -73,5 +88,30 @@ export default {
     title: String,
     type: String,
   },
+  computed: {
+    jobExists() {
+      return this.$store.getters.lodestoneData.Jobs[this.initial] != null;
+    },
+    currentLevel() {
+      return this.$store.getters.lodestoneData.Jobs[this.initial].Level || 0;
+    },
+    jobUnlocked() {
+      return this.currentLevel != 0;
+    },
+    isMaxLevel() {
+      if (this.initial == "blu") {
+        return this.currentLevel == this.maxLevelBlue;
+      } else {
+        return this.currentLevel == this.maxLevel;
+      }
+    },
+    levelProgressPercentage() {
+      const level = this.currentLevel;
+      const maxLevel = this.initial == "blu" ? this.maxLevelBlue : this.maxLevel;
+
+      // Using a logarithmic scale to make the progress bar look more natural
+      return (Math.pow(1.03, level + 1) / Math.pow(1.03, maxLevel + 1)) * 100;
+    },
+  }
 };
 </script>

@@ -1,33 +1,155 @@
 <template>
-  <div :class="{ night: true }" class="d-flex flex-column min-vh-100">
+  <div id="root" class="d-flex flex-column min-vh-100" :data-bs-theme="this.$store.getters.theme">
     <TheNavbar />
+
     <main class="flex-shrink-0">
+      <!-- Alert: Backend offline -->
       <div v-if="this.$store.getters.backendOffline" class="container">
-        <AlertMsg type="error" :msg="$t('message.backendUnavailable')" />
+        <AlertMsg type="danger" :msg="$t('message.backendUnavailable')" />
       </div>
+
+      <!-- Alert: New version available -->
       <!-- <div v-else-if="!this.$store.getters.versionMatches" class="container">
         <AlertMsg
           type="success"
           msg="A new version is available! <a href='javascript:window.location.reload()' class='alert-link'>Reload and update the page</a>."
         />
       </div> -->
+
+      <!-- Alert: Global error -->
       <div v-if="this.globalError" class="container">
-        <AlertMsg type="error" :msg="this.globalError" />
+        <AlertMsg type="danger" :msg="this.globalError" />
       </div>
+
+      <!-- Alert: Signing in... -->
       <div v-if="this.$store.state.signingIn == true" class="container">
         <AlertMsg type="normal" :msg="$t('message.signingDiscord')" />
       </div>
-      <router-view />
+
+      <!-- Alert: Lodestone maintenance -->
+      <div v-if="this.now > this.news.maintenance.start && this.now < this.news.maintenance.end" class="container">
+        <AlertMsg type="warning" :msg="$t('message.lodestoneMaintenance')" />
+      </div>
+      <div v-else-if="!this.news.maintenance.updated" class="container">
+        <AlertMsg type="info" :msg="$t('message.lodestoneMaintenanceNotUpdated')" />
+      </div>
+
+      <!-- Page content -->
+      <div class="container">
+        <router-view />
+      </div>
     </main>
+
     <TheFooter />
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: "Nunito", "Noto Sans JP", sans-serif;
+///
+// Variables
+///
+
+[data-bs-theme="day"] {
+  --bs-body-color: #222222;
+  --bs-body-bg: #f6f8fc;
+  --bs-dark: #212529;
+  --bs-transparent: rgba(255, 255, 255, 0);
+
+  --bs-primary: #148653;
+  --bs-primary-color: var(--bs-primary);
+  --bs-primary-hover: #39a273;
+  --bs-primary-active: #2f8c63;
+  --bs-primary-text-emphasis: var(--bs-white);
+
+  --bs-secondary: #4B5A66;
+  --bs-secondary-color: var(--bs-secondary);
+
+  --bs-success: #008045;
+
+  --bs-warning: #967100;
+
+  --bs-info: #0d7c93;
+
+  --xt-tank-color: #0971cd;
+  --xt-healer-color: #167b01;
+  --xt-dps-color: #d02323;
+  --xt-crafter-color: #85670d;
+  --xt-gatherer-color: #6741eb;
+
+  .form-check-input:checked[type="radio"] {
+    --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23222'/%3e%3c/svg%3e");
+  }
+
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+
+[data-bs-theme="night"] {
+  --bs-body-color: #dddddd;
+  --bs-body-bg: #1c2024;
+  --bs-dark: #212529;
+  --bs-transparent: rgba(255, 255, 255, 0);
+  
+  --bs-primary: #41b883;
+  --bs-primary-color: var(--bs-primary);
+  --bs-primary-hover: #39a273;
+  --bs-primary-active: #2f8c63;
+  --bs-primary-text-emphasis: #0d3724;
+
+  --bs-secondary: #838D96;
+  --bs-secondary-color: var(--bs-secondary);
+  
+  --bs-success: #53b462;
+  --bs-success-bg-subtle: var(--bs-success);
+  --bs-success-text-emphasis: #05310d;
+  --bs-success-border-subtle: var(--bs-success-text-emphasis);
+  
+  --bs-warning: #f6e275;
+  --bs-warning-bg-subtle: var(--bs-warning);
+  --bs-warning-text-emphasis: #332d19;
+  --bs-warning-border-subtle: var(--bs-warning-text-emphasis);
+
+  --bs-danger: #b45353;
+  --bs-danger-bg-subtle: var(--bs-danger);
+  --bs-danger-text-emphasis: #310505;
+  --bs-danger-border-subtle: var(--bs-danger-text-emphasis);
+  
+  --bs-info: #9dd1ff;
+  --bs-info-bg-subtle: var(--bs-info);
+  --bs-info-text-emphasis: #071e2d;
+  --bs-info-border-subtle: var(--bs-info-text-emphasis);
+
+  --xt-tank-color: #9dd1ff;
+  --xt-healer-color: #a6ff93;
+  --xt-dps-color: #ff8f8f;
+  --xt-crafter-color: #ffd99d;
+  --xt-gatherer-color: #bdaaff;
+
+  .form-check-input:checked[type="radio"] {
+    --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23ddd'/%3e%3c/svg%3e");
+  }
+
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+
+.navbar-nav {
+  --bs-nav-link-font-weight: 600;
+}
+
+.offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl {
+  --bs-offcanvas-transition: transform 0.1s ease-in-out;
+}
+
+///
+// Body
+///
+
+#root {
+  font-family: "Montserrat", "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 18px;
-  font-weight: 600;
+  font-optical-sizing: auto;
+  font-kerning: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -36,28 +158,33 @@ main {
   padding-top: 75px;
 }
 
-/* Works on Firefox */
+///
+// Scrollbars
+///
+
 * {
   scrollbar-width: thin;
-  scrollbar-color: #41b883 #262b2f;
+  scrollbar-color: #41b883 var(--bs-gray-800);
 }
 
-/* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: 12px;
 }
 
 *::-webkit-scrollbar-track {
-  background: #262b2f;
+  background: var(--bs-gray-800);
 }
 
 *::-webkit-scrollbar-thumb {
   background-color: #41b883;
   border-radius: 20px;
-  border: 3px solid #262b2f;
+  border: 3px solid var(--bs-gray-800);
 }
 
-/* Tooltips */
+///
+// Tooltips
+///
+
 .tt {
   position: relative;
 }
@@ -66,8 +193,8 @@ main {
   visibility: hidden;
   width: auto;
   white-space: nowrap;
-  background-color: #2b3136;
-  color: #c5c6c7;
+  background-color: var(--bs-gray-800);
+  color: var(--bs-gray-200);
   text-align: center;
   border-radius: 10px;
   padding: 8px 10px;
@@ -90,7 +217,7 @@ main {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #2b3136 transparent transparent transparent;
+  border-color: var(--bs-gray-800) transparent transparent transparent;
 }
 
 @media only screen and (max-width: 800px) {
@@ -103,88 +230,35 @@ main {
   visibility: visible;
 }
 
-.night {
-  color: #dddddd;
-  background-color: #1c2024;
+///
+// Typography
+///
 
-  .text-secondary {
-    color: #a2a4a6 !important;
-  }
-
-  .list-group-item {
-    color: #dddddd;
-    background-color: #1c2024;
-    border-color: #484848;
-  }
-
-  .form-check-input {
-    background-color: #1c2024;
-    border: 1px solid rgb(255, 255, 255);
-  }
-
-  .border {
-    border-color: #444444 !important;
-  }
-
-  .border-bottom {
-    border-color: #41b883 !important;
-  }
-
-  .border-grey {
-    border-color: #444444 !important;
-  }
-
-  .floating-label {
-    color: #b9bbbe;
-  }
-
-  .form-control {
-    color: #dbdcdd;
-    background-color: #262b2f;
-  }
-
-  .form-control::placeholder {
-    color: rgba(97, 108, 120, 0.75);
-  }
-}
-
-.indent-paragraphs p {
-  margin-left: 20px;
-}
-
-.list-group-item {
-  padding-bottom: 0.4rem;
-}
-
-table {
-  color: #ddd !important;
-}
-
-tbody,
-td,
-tfoot,
-th,
-thead,
-tr {
-  border-color: #484848;
+a,
+abbr {
+  text-underline-offset: 0.25em !important;
 }
 
 p a,
 p a:focus {
-  color: #41b883;
+  color: var(--bs-primary-color);
 }
 
 p a:hover {
-  color: #22e38d;
+  filter: brightness(150%);
+}
+
+a:hover .fa-fw {
+  filter: brightness(150%)
 }
 
 h1 {
   font-weight: 700;
   margin-bottom: 0px !important;
-}
 
-h1 .border-bottom {
-  border-color: #41b883 !important;
+  .border-bottom {
+    border-color: var(--bs-primary) !important;
+  }
 }
 
 h3 {
@@ -199,19 +273,11 @@ h3 {
 hr {
   height: 0px;
   border: none;
-  border-top: 1px solid #41b883;
+  border-top: 1px solid var(--bs-primary);
   opacity: 1;
   background-color: initial;
   margin-top: 12px;
   margin-bottom: 12px;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.text-bold {
-  font-weight: 800;
 }
 
 .text-justify {
@@ -219,52 +285,182 @@ hr {
   text-justify: inter-word;
 }
 
+.text-decoration-line-through {
+  text-decoration-thickness: 2px !important;
+}
+
+.text-primary {
+  color: var(--bs-primary) !important;
+}
+
+.text-secondary {
+  color: var(--bs-secondary) !important;
+}
+
 .text-success {
-  color: #53b462 !important;
+  color: var(--bs-success) !important;
 }
 
 .text-danger {
-  color: #b45353 !important;
+  color: var(--bs-danger) !important;
+}
+
+.text-warning {
+  color: var(--bs-warning) !important;
 }
 
 .text-info {
-  color: #9dd1ff !important;
+  color: var(--bs-info) !important;
 }
 
-.text-muted {
-  color: #6c757d !important;
+///
+// Buttons
+///
+
+// Primary
+.btn-primary,
+.btn-outline-primary {
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-active-color: var(--bs-white);
+  
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-border-color: var(--bs-primary-hover);
+  --bs-btn-active-border-color: var(--bs-primary-active);
+  --bs-btn-disabled-border-color: var(--bs-primary);
+  
+  --bs-btn-focus-shadow-rgb: 0,0,0;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
-.form-text {
-  color: #6c757d;
+.btn-primary {
+  --bs-btn-color: var(--bs-primary-text-emphasis);
+  --bs-btn-disabled-color: var(--bs-primary-text-emphasis);
+
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-hover-bg: var(--bs-primary-hover);
+  --bs-btn-active-bg: var(--bs-primary-active);
+  --bs-btn-disabled-bg: var(--bs-primary);
 }
 
+.btn-outline-primary {
+  --bs-btn-color: var(--bs-primary);
+  --bs-btn-disabled-color: var(--bs-primary);
+
+  --bs-btn-bg: var(--bs-transparent);
+  --bs-btn-hover-bg: var(--bs-primary);
+  --bs-btn-active-bg: var(--bs-primary);
+  --bs-btn-disabled-bg: var(--bs-transparent);
+}
+
+// Success outline
 .btn-outline-success {
-  color: #41b883;
-  border-color: #41b883;
+  color: var(--bs-success);
+  border-color: var(--bs-success);
 }
 
-.lodestone-tooltip {
-  text-decoration-style: dashed;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  cursor: help;
+// Secondary outline
+.btn-outline-secondary {
+  color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
 }
 
-.lodestone-tooltip {
-  text-decoration-color: rgba(255, 255, 255, 0.5);
+///
+// Lists
+///
+
+.list-group-item-action:focus,
+.list-group-item-action:hover {
+  color: unset;
+  background-color: var(--bs-body-bg);
+  filter: brightness(95%);
 }
 
-.text-secondary .lodestone-tooltip {
-  text-decoration-color: rgba(162, 164, 166, 0.5);
+.list-group-item-action:active {
+  background-color: var(--bs-body-bg);
+  filter: brightness(90%);
 }
 
-.text-success .lodestone-tooltip {
-  text-decoration-color: rgba(83, 180, 98, 0.5);
+.list-group-item {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border-color: #484848;
+  padding-bottom: 0.4rem;
 }
 
-.text-danger .lodestone-tooltip {
-  text-decoration-color: rgba(180, 83, 83, 0.5);
+///
+// Tables
+///
+
+table {
+  color: var(--bs-body-color) !important;
+}
+
+.table {
+  --bs-table-color: unset;
+  --bs-table-bg: unset;
+}
+
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+  border-color: #484848;
+}
+
+///
+// Forms
+///
+
+.form-check-input {
+  background-color: var(--bs-transparent);
+  border: 1px solid var(--bs-body-color);
+}
+
+.form-check-input:checked {
+  background-color: var(--bs-transparent);
+  border: 1px solid var(--bs-body-color);
+}
+
+.form-control {
+  border-color: var(--bs-body-color);
+}
+
+.form-control::placeholder {
+  color: rgba(97, 108, 120, 0.6);
+}
+
+///
+// Misc
+///
+
+.cursor-grab {
+  cursor: grab;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.filter-bright-50 {
+  filter: brightness(50%);
+}
+
+.border {
+  border-color: var(--bs-gray-800) !important;
+}
+
+.border-bottom {
+  border-color: var(--bs-primary) !important;
+}
+
+.border-grey {
+  border-color: var(--bs-gray-800) !important;
+}
+
+.indent-paragraphs p {
+  margin-left: 20px;
 }
 </style>
 
@@ -273,6 +469,7 @@ import TheNavbar from "@/components/TheNavbar.vue";
 import TheFooter from "@/components/TheFooter.vue";
 import AlertMsg from "@/components/AlertMsg.vue";
 import { getVersion, getUserData, addCharacter } from "@/utilities/backend.js";
+import news from "@/assets/news.json";
 
 export default {
   name: "App",
@@ -285,6 +482,8 @@ export default {
     return {
       intervalFunction: null,
       tabFocused: true,
+      news: news,
+      now: new Date() / 1000,
     };
   },
   mounted() {
@@ -305,7 +504,7 @@ export default {
     clearInterval(this.intervalFunction);
   },
   computed: {
-    computeWindowTitle() {
+    windowTitle() {
       const routeName = this.$route.name;
 
       if (routeName === undefined || routeName === "Home") {
@@ -318,6 +517,9 @@ export default {
         return `XIV ToDo - ${i18nRouteName}`;
       }
     },
+    canonicalURL() {
+      return "https://xivtodo.com" + this.$route.path;
+    },
     globalError() {
       if (this.$store.state.signingIn?.status == 401) {
         return this.$t("message.signingUnauthorizedError");
@@ -328,17 +530,21 @@ export default {
       }
     },
   },
-  watch: {
-    computeWindowTitle: "setWindowTitle",
+  head() {
+    return {
+      title: this.windowTitle,
+      link: [
+        {
+          rel: "canonical",
+          href: this.canonicalURL,
+        },
+      ],
+    };
   },
   created() {
-    this.setWindowTitle();
     this.detectFocusOut();
   },
   methods: {
-    setWindowTitle() {
-      document.title = this.computeWindowTitle;
-    },
     detectFocusOut() {
       let inView = false;
 

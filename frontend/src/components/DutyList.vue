@@ -1,6 +1,6 @@
 <template>
-  <h3><img v-if="type" :src="'/icons/duty-' + type + '.png'" />{{ title }}</h3>
-  <span v-if="showTotal" class="fw-lighter text-muted">
+  <h3><img v-if="type" :src="'/icons/duty-' + type + '.png'" :alt="'Duty icon for type ' + type"/>{{ title }}</h3>
+  <span v-if="showTotal" class="text-muted">
     {{ $t("shared.countTotal", { count: duties.length }) }}
   </span>
   <div class="list-group list-group-flush">
@@ -8,8 +8,6 @@
       v-for="item of injectDutyCompletion(duties)"
       :key="item.Name"
       :duty="item"
-      :clearedMaybe="true"
-      :blur="false"
       :filters="this.$parent.$data.filters || {}"
     />
   </div>
@@ -74,6 +72,7 @@ export default {
         if (item.Expansion == "4x" && !achievements.has(1794)) blur = true;
         if (item.Expansion == "5x" && !achievements.has(2298)) blur = true;
         if (item.Expansion == "6x" && !achievements.has(2958)) blur = true;
+        if (item.Expansion == "7x" && !achievements.has(3496)) blur = true;
         if (spoilersOption == "2") blur = false;
         item.blur = blur;
       }

@@ -11,6 +11,9 @@ const store = createStore({
     flags: {},
   },
   getters: {
+    isDevEnv(state) {
+      return state.env.NODE_ENV == "development";
+    },
     versionMatches(state) {
       return state.env.VUE_APP_BUILD_NUM == state.upstreamVersion || state.upstreamVersion == null;
     },
@@ -29,6 +32,14 @@ const store = createStore({
     isSignedIn(state) {
       return state.userData != null && state.userData != {};
     },
+    discordAuthURI(state) {
+      return "https://discord.com/api/oauth2/authorize" +
+        "?response_type=code" +
+        "&client_id=" + state.env.VUE_APP_DISCORD_CLIENT_ID +
+        "&scope=identify" +
+        "&redirect_uri=" + encodeURIComponent(state.env.VUE_APP_DISCORD_REDIRECT_URI) +
+        "&prompt=consent";
+    },
     discordUser(state) {
       return state.userData?.discordUser || {};
     },
@@ -41,6 +52,17 @@ const store = createStore({
     },
     settings(state) {
       return state.userData?.settings || {};
+    },
+    theme(state, getters) {
+      const themeOption = getters.settings.themeOption || 0;
+      switch (themeOption) {
+        case 0:
+          return "night";
+        case 1:
+          return "day";
+        default:
+          return "night";
+      }
     },
     characters(state) {
       return state.userData?.characters || [];

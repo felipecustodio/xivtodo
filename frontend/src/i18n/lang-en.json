@@ -24,12 +24,15 @@
     "discord": "Discord",
     "countdowns": "Countdowns",
     "newsUpdates": "News & Updates",
-    "language": "Language"
+    "language": "Language",
+    "sandbox": "Sandbox"
   },
   "navbar": {
     "changeActiveCharacter": "Active character",
     "preferredLanguage": "Preferred language",
-    "feedback": "Feedback"
+    "feedback": "Feedback",
+    "settingsAndCharacters": "Settings & Characters",
+    "noCharacters": "Add your characters in Settings"
   },
   "pageHeader": {
     "ofCharacter": "of {characterName}",
@@ -44,8 +47,10 @@
     "signingUnknownError": "XIV ToDo was unable to reach Discord. Try again later, or look on <a href='https://twitter.com/XIVToDo' class='alert-link' target='_blank' rel='noopener noreferrer'>Twitter</a> or <a href='https://discord.gg/zfzhKhG3zj' class='alert-link' target='_blank' rel='noopener noreferrer'>Discord</a> for a status update.",
     "updatingCharacter": "Updating character data, this may take a minute...",
     "achievementsNotPublic": "The achievements for this character are not set to public in Lodestone.",
-    "notSignedIn": "No characters found. You can <a href='{url}' class='alert-link'>sign in with Discord</a> to add them.",
-    "noCharacters": "No characters found. You can add your characters from the <a href='/settings' class='alert-link'>Settings</a>."
+    "notSignedIn": "No characters found. <a href='{url}' class='alert-link'>Sign in with Discord</a> to add and track your characters.",
+    "noCharacters": "No characters found. You can add your characters from the <a href='/settings' class='alert-link'>Settings</a>.",
+    "lodestoneMaintenance": "Lodestone is currently undergoing maintenance. Click on <span class='fa-fw fas fa-clock position-relative'></span> in the menu to see how much time is remaining.",
+    "lodestoneMaintenanceNotUpdated": "Lodestone maintenance has ended, but XIV ToDo is not yet fully updated. Thank you for your patience!"
   },
   "footer": {
     "trademark": "FINAL FANTASY is a registered trademark of Square Enix Holdings Co., Ltd.",
@@ -145,7 +150,6 @@
     "cityState": "City-state",
     "grandCompany": "Grand Company",
     "playingSince": "Playing since",
-    "playingSinceAlt": "May not be accurate for legacy characters",
     "achievements": "Achievements",
     "tanks": "Tanks",
     "healers": "Healers",
@@ -169,12 +173,14 @@
       "nin": "Ninja",
       "sam": "Samurai",
       "rpr": "Reaper",
+      "vpr": "Viper",
       "brd": "Bard",
       "mch": "Machinist",
       "dnc": "Dancer",
       "blm": "Black Mage",
       "smn": "Summoner",
       "rdm": "Red Mage",
+      "pct": "Pictomancer",
       "blu": "Blue Mage",
       "crp": "Carpenter",
       "bsm": "Blacksmith",
@@ -220,8 +226,8 @@
     "sideStoryQuests": "Side Story Quests",
     "encounterQuests": "Encounter Quests",
     "relicQuests": "Relic Quests",
-    "tribalQuests": "Tribal Quests",
-    "alliedTribalQuests": "Allied Tribal Quests",
+    "tribalQuests": "Allied Society Quests",
+    "alliedTribalQuests": "Intersocietal Quests",
     "customDeliveryQuests": "Custom Delivery Quests",
     "jobQuests": "Job Quests",
     "combatJobQuests": "Combat Job Quests",
@@ -229,8 +235,10 @@
     "crafterJobQuests": "Crafter Job Quests",
     "roleQuestsShB": "Role Quests (ShB)",
     "roleQuestsEW": "Role Quests (EW)",
+    "roleQuestsDT": "Role Quests (DT)",
     "crystallineMeanQuests": "Crystalline Mean Quests",
-    "studiumDeliveryQuests": "Studium Delivery Quests"
+    "studiumDeliveryQuests": "Studium Delivery Quests",
+    "wachumeqimeqiDeliveryQuests": "Wachumeqimeqi Delivery Quests"
   },
   "challenges": {
     "deepDungeons": "Deep Dungeons",
@@ -246,6 +254,7 @@
     "miscellaneous": "Miscellaneous",
     "sharedFateShB": "Shared Fate (ShB)",
     "sharedFateEW": "Shared Fate (EW)",
+    "sharedFateDT": "Shared Fate (DT)",
     "bozjanSouthernFront": "Bozjan Southern Front",
     "zadnor": "Zadnor",
     "variantDungeons": "Variant Dungeons",
@@ -303,6 +312,12 @@
       "option2": "Always show patch numbers",
       "hint": "Preference in showing patch numbers for content."
     },
+    "theme": {
+      "label": "Theme",
+      "option0": "Night",
+      "option1": "Day",
+      "hint": "Preference in the appearance of the site."
+    },
     "updateSettings": "Update settings",
     "characterNotFound": "Character not in Lodestone",
     "characterNotFoundAlt": "This character does not exist in Lodestone. If you recently transfered world, try updating again later",
@@ -334,12 +349,14 @@
     "updatingWait": "Updating, please wait...",
     "addingWait": "Adding, please wait...",
     "portraitAlt": "Portrait of your character",
+    "moreDetails": "More details",
     "expansion": {
       "arr": "A Realm Reborn",
       "hw": "Heavensward",
       "sb": "Stormblood",
       "shb": "Shadowbringers",
-      "ew": "Endwalker"
+      "ew": "Endwalker",
+      "dt": "Dawntrail"
     },
     "time": {
       "daysShort": "{days}d",
@@ -350,7 +367,12 @@
       "daysAgo": "{days} days ago",
       "hoursAgo": "{hours} hours ago",
       "minutesAgo": "{minutes} minutes ago",
-      "coupleSecondsAgo": "a couple seconds ago"
+      "coupleSecondsAgo": "a couple seconds ago",
+      "currentlyAvailable": "Currently available",
+      "eventEnded": "This event has ended",
+      "available": "Available",
+      "ending": "Ending",
+      "starting": "Starting"
     }
   }
 }

@@ -1,42 +1,42 @@
 {
-  "latestCountdownID": 41,
+  "maintenance": {
+    "updated": true,
+    "start": 1719392400,
+    "end": 1719565200
+  },
+  "latestCountdownID": 42,
   "countdowns": [
     {
-      "title": "Little Ladies' Day & Hatching-tide",
-      "url": "https://na.finalfantasyxiv.com/lodestone/special/2024/Little_Ladies_Day_Hatching_tide/fnvycqn3ol",
-      "start": 1710403200,
-      "end": 1711983600
-    },
-    {
-      "title": "FFXVI Collaboration Event",
-      "url": "https://na.finalfantasyxiv.com/lodestone/special/ffxvi/",
-      "start": 1712052000,
-      "end": 1715162400
-    },
-    {
-      "title": "Letter from the Producer LIVE LXXX",
-      "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/2f130c484a50a670201cb3601003fcf8899e8266",
-      "start": 1712937600,
-      "end": 1712948400
-    },
-    {
-      "title": "Patch 6.58",
-      "url": "https://na.finalfantasyxiv.com/lodestone/special/patchnote_log/",
-      "start": 1710842400
-    },
-    {
-      "title": "Patch 7.0 (Dawntrail) - Early Access",
-      "url": "https://na.finalfantasyxiv.com/dawntrail/",
-      "start": 1719565200
-    },
-    {
       "title": "Patch 7.0 (Dawntrail)",
-      "url": "https://na.finalfantasyxiv.com/dawntrail/",
+      "type": "patch",
+      "url": "https://na.finalfantasyxiv.com/lodestone/topics/detail/d7db61f938f9cea65e4c5cd261918edb036b3004",
       "start": 1719910800
+    },
+    {
+      "title": "Patch 7.01",
+      "type": "patch",
+      "start": 1721120400
+    },
+    {
+      "title": "Patch 7.05",
+      "type": "patch",
+      "start": 1722416400
     }
   ],
-  "latestID": 230523,
+  "latestID": 240627,
   "news": [
+    {
+      "ID": 240627,
+      "title": "Release of Dawntrail",
+      "published": "June 27, 2024",
+      "content": "After a two and a half years wait, Dawntrail is finally at our doorstep! I've updated XIV ToDo with placeholders for the new content, which will be updated in the coming days. Any content name considered spoilers will be blurred by default, as always. If you encounter any issues, please let me know! In the meantime, happy new expansion!"
+    },
+    {
+      "ID": 240421,
+      "title": "Theme & styling updates",
+      "published": "April 21, 2024",
+      "content": "While waiting for Dawntrail, I've spent some time cleaning up XIV ToDo (and fixing a few issues). More visibly, I've tweaked the styling of the site (text, layout, etc.) and added a light theme, which you can try from the settings page. Do let me know if you have any feedback or issues with either of the current themes, or if you have any ideas for another palette theme!"
+    },
     {
       "ID": 231003,
       "title": "Release of patch 6.5",

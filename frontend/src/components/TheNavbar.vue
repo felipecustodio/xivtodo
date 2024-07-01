@@ -1,6 +1,6 @@
 <template>
-  <header>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <header data-bs-theme="night">
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark">
       <div class="container-fluid user-select-none">
         <router-link to="/" class="navbar-brand mb-0 h1">
           <img style="height: 28px" src="@/assets/img/brand.png" alt="XIV ToDo branding" />
@@ -16,28 +16,42 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div v-if="this.$route.name != 'Character'" class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav navbar-nav-scroll ms-auto flex-grow-1 mb-2 mb-md-0">
+            <!-- Profile -->
             <li v-if="this.$store.getters.hasCharacter" class="nav-item">
-              <router-link to="/profile" class="nav-link" @click="collapseNav">
-                {{ $t("page.profile") }}
+              <router-link to="/profile/" class="nav-link" @click="collapseNav">
+                <i class="fa-fw fas fa-user d-none d-md-inline-block d-xl-none"></i>
+                <span class="d-md-none d-xl-inline">{{ $t("page.profile") }}</span>
               </router-link>
             </li>
+
+            <!-- Encounters -->
             <li class="nav-item">
-              <router-link to="/encounters" class="nav-link" @click="collapseNav">
-                {{ $t("page.encounters") }}
+              <router-link to="/encounters/" class="nav-link" @click="collapseNav">
+                <i class="fa-fw fas fa-swords d-none d-md-inline-block d-xl-none"></i>
+                <span class="d-md-none d-xl-inline">{{ $t("page.encounters") }}</span>
               </router-link>
             </li>
+
+            <!-- Questlines -->
             <li class="nav-item">
-              <router-link to="/questlines" class="nav-link" @click="collapseNav">
-                {{ $t("page.questlines") }}
+              <router-link to="/questlines/" class="nav-link" @click="collapseNav">
+                <i class="fa-fw fas fa-map-marker-exclamation d-none d-md-inline-block d-xl-none"></i>
+                <span class="d-md-none d-xl-inline">{{ $t("page.questlines") }}</span>
               </router-link>
             </li>
+
+            <!-- Challenges -->
             <li class="nav-item">
-              <router-link to="/challenges" class="nav-link" @click="collapseNav">
-                {{ $t("page.challenges") }}
+              <router-link to="/challenges/" class="nav-link" @click="collapseNav">
+                <i class="fa-fw fas fa-medal d-none d-md-inline-block d-xl-none"></i>
+                <span class="d-md-none d-xl-inline">{{ $t("page.challenges") }}</span>
               </router-link>
             </li>
+
+            <!-- Collection -->
             <!-- <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -54,39 +68,55 @@
                 aria-labelledby="collectionDropdown"
               >
                 <li>
-                  <router-link to="/achievements" class="dropdown-item" @click="collapseNav">
-                    <i class="fa-fw fal fa-trophy"></i> {{ $t("page.achievements") }}
+                  <router-link to="/achievements/" class="dropdown-item" @click="collapseNav">
+                    <i class="fa-fw fas fa-trophy"></i> {{ $t("page.achievements") }}
                   </router-link>
-                  <router-link to="/titles" class="dropdown-item" @click="collapseNav">
-                    <i class="fa-fw fal fa-scroll"></i> {{ $t("page.titles") }}
+                  <router-link to="/titles/" class="dropdown-item" @click="collapseNav">
+                    <i class="fa-fw fas fa-scroll"></i> {{ $t("page.titles") }}
                   </router-link>
-                  <router-link to="/mounts" class="dropdown-item" @click="collapseNav">
-                    <i class="fa-fw fal fa-horse-saddle"></i> {{ $t("page.mounts") }}
+                  <router-link to="/mounts/" class="dropdown-item" @click="collapseNav">
+                    <i class="fa-fw fas fa-horse-saddle"></i> {{ $t("page.mounts") }}
                   </router-link>
-                  <router-link to="/minions" class="dropdown-item" @click="collapseNav">
-                    <i class="fa-fw fal fa-cat-space"></i> {{ $t("page.minions") }}
+                  <router-link to="/minions/" class="dropdown-item" @click="collapseNav">
+                    <i class="fa-fw fas fa-cat-space"></i> {{ $t("page.minions") }}
                   </router-link>
                 </li>
               </ul>
             </li> -->
+
+            <!-- Checklist -->
             <li class="nav-item">
-              <router-link to="/checklist" class="nav-link" @click="collapseNav">
-                {{ $t("page.checklist") }}
+              <router-link to="/checklist/" class="nav-link" @click="collapseNav">
+                <span class="fa-fw fas fa-tasks d-none d-md-inline-block d-xl-none"></span>
+                <span class="d-md-none d-xl-inline">{{ $t("page.checklist") }}</span>
               </router-link>
             </li>
-          </ul>
-          <ul class="navbar-nav mb-2 mb-lg-0">
+
+            <!-- Items above are left-aligned -->
+            <li class="nav-item flex-grow-1"></li>
+            <!-- Items below are right-aligned -->
+
+            <!-- Sandbox -->
+            <li v-if="this.$store.getters.isDevEnv" class="nav-item">
+              <router-link to="/sandbox/" class="nav-link" aria-label="Sandbox">
+                <span class="fa-fw fas fa-wrench"></span>
+                <span class="d-inline d-md-none ms-2">{{ $t("page.sandbox") }}</span>
+              </router-link>
+            </li>
+
+            <!-- Countdowns -->
             <li class="nav-item">
               <a
                 class="nav-link"
+                href="#"
                 type="button"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasCountdowns"
                 aria-controls="offcanvasCountdowns"
+                aria-label="Countdowns"
                 @click="seenLatestCountdown()"
               >
-                <span class="d-inline d-lg-none">{{ $t("page.countdowns") }} </span>
-                <span class="fa-fw fal fa-clock position-relative">
+                <span class="fa-fw fas fa-clock position-relative">
                   <span
                     v-if="
                       this.$store.getters.isSignedIn && this.$store.getters.latestCountdownSeen < news.latestCountdownID
@@ -95,27 +125,34 @@
                   >
                   </span>
                 </span>
+                <span class="d-inline d-md-none ms-2">{{ $t("page.countdowns") }}</span>
               </a>
             </li>
+
+            <!-- News -->
             <li class="nav-item">
               <a
                 class="nav-link"
+                href="#"
                 type="button"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasUpdates"
                 aria-controls="offcanvasUpdates"
+                aria-label="News"
                 @click="seenLatestNews()"
-              >
-                <span class="d-inline d-lg-none">{{ $t("page.newsUpdates") }} </span>
-                <span class="fa-fw fal fa-bell position-relative">
+              > 
+                <span class="fa-fw fas fa-bell position-relative">
                   <span
                     v-if="this.$store.getters.isSignedIn && this.$store.getters.latestNewsSeen < news.latestID"
                     class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"
                   >
                   </span>
                 </span>
+                <span class="d-inline d-md-none ms-2">{{ $t("page.newsUpdates") }}</span>
               </a>
             </li>
+
+            <!-- Language -->
             <li class="nav-item dropdown">
               <a
                 class="nav-link"
@@ -124,58 +161,55 @@
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                aria-label="Language"
                 @click="this.$store.commit('setFlag', { key: 'languageClicked', value: true })"
               >
-                <span class="d-inline d-lg-none">{{ $t("page.language") }} </span>
-                <span class="fa-fw fal fa-globe-americas position-relative">
+                <span class="fa-fw fas fa-globe-americas position-relative">
                   <span
                     v-if="!this.$store.getters.flag('languageClicked')"
                     class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"
                   >
                   </span>
                 </span>
+                <span class="d-inline d-md-none ms-2">{{ $t("page.language") }}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="collectionDropdown">
+                <!-- Preferred language -->
                 <li>
                   <h6 class="dropdown-header">{{ $t("navbar.preferredLanguage") }}</h6>
                 </li>
-                <li v-if="this.$store.getters.language == 'en'">
-                  <span class="dropdown-item active" @click="collapseNav">
+                <li>
+                  <span v-if="this.$store.getters.language == 'en'" class="dropdown-item active" @click="collapseNav">
                     English
                     <i class="fa-fw fal fa-check"></i>
                   </span>
+                  <a v-else class="dropdown-item" href="#" @click="changeLanguage('en')">English</a>
                 </li>
-                <li v-else>
-                  <a class="dropdown-item" href="#" @click="changeLanguage('en')">English</a>
-                </li>
-                <li v-if="this.$store.getters.language == 'fr'">
-                  <span class="dropdown-item active" @click="collapseNav">
-                    Français (TEC)
+                <li>
+                  <span v-if="this.$store.getters.language == 'fr'" class="dropdown-item active" @click="collapseNav">
+                    Français
                     <i class="fa-fw fal fa-check"></i>
                   </span>
+                  <a v-else class="dropdown-item" href="#" @click="changeLanguage('fr')">Français</a>
                 </li>
-                <li v-else>
-                  <a class="dropdown-item" href="#" @click="changeLanguage('fr')">Français (TEC)</a>
-                </li>
-                <li v-if="this.$store.getters.language == 'de'">
-                  <span class="dropdown-item active" @click="collapseNav">
-                    Deutsch (WIP)
+                <li>
+                  <span v-if="this.$store.getters.language == 'de'" class="dropdown-item active" @click="collapseNav">
+                    Deutsch
                     <i class="fa-fw fal fa-check"></i>
                   </span>
+                  <a v-else class="dropdown-item" href="#" @click="changeLanguage('de')">Deutsch</a>
                 </li>
-                <li v-else>
-                  <a class="dropdown-item" href="#" @click="changeLanguage('de')">Deutsch (WIP)</a>
-                </li>
-                <li v-if="this.$store.getters.language == 'ja'">
-                  <span class="dropdown-item active" @click="collapseNav">
-                    日本語 (仕掛品)
+                <li>
+                  <span v-if="this.$store.getters.language == 'ja'" class="dropdown-item active" @click="collapseNav">
+                    日本語
                     <i class="fa-fw fal fa-check"></i>
                   </span>
+                  <a v-else class="dropdown-item" href="#" @click="changeLanguage('ja')">日本語</a>
                 </li>
-                <li v-else>
-                  <a class="dropdown-item" href="#" @click="changeLanguage('ja')"> 日本語 (仕掛品) </a>
-                </li>
+
                 <li><hr class="dropdown-divider" /></li>
+
+                <!-- Feedback -->
                 <li>
                   <a
                     class="dropdown-item"
@@ -183,16 +217,21 @@
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <i class="fa-fw fal fa-comments-alt"></i> {{ $t("navbar.feedback") }}
+                    <i class="fa-fw fas fa-comments-alt"></i> {{ $t("navbar.feedback") }}
                   </a>
                 </li>
               </ul>
             </li>
+
+            <!-- Sign-in -->
             <li v-if="!this.$store.getters.isSignedIn" class="nav-item">
-              <a class="nav-link" :href="this.$store.state.env.VUE_APP_DISCORD_AUTH_URI">
-                {{ $t("home.signInDiscord") }}
+              <a class="nav-link" :href="this.$store.getters.discordAuthURI">
+                <span class="d-inline-block d-md-none fa-fw fas fa-sign-in me-2"></span>
+                <span>{{ $t("home.signInDiscord") }}</span>
               </a>
             </li>
+
+            <!-- Settings & character -->
             <li v-else class="nav-item dropdown">
               <a
                 class="nav-link"
@@ -203,36 +242,43 @@
                 aria-expanded="false"
               >
                 <span v-if="this.$store.getters.hasCharacter">
-                  {{ this.$store.getters.lodestoneData.Character.Name }}
+                  <span class="d-inline-block d-md-none fa-fw fas fa-cog me-2"></span>
+                  <span>{{ this.$store.getters.lodestoneData.Character.Name }}</span>
                   <img
                     v-if="this.$store.getters.hasCharacter"
-                    class="avatar-nav d-none d-lg-inline"
+                    class="avatar-nav d-none d-md-inline"
                     :src="this.$store.getters.character.Avatar"
                     :alt="$t('shared.portraitAlt')"
                   />
                 </span>
-                <span v-else>
-                  {{ $t("page.settings") }}
-                </span>
+                <template v-else>
+                  <span class="d-inline-block d-md-none fa-fw fas fa-cog me-2"></span>
+                  <span>{{ $t("navbar.settingsAndCharacters") }}</span>
+                </template>
               </a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                <div v-if="this.$store.getters.hasCharacter">
-                  <li>
-                    <h6 class="dropdown-header">{{ $t("navbar.changeActiveCharacter") }}</h6>
-                  </li>
-                  <li v-for="(item, i) of this.$store.getters.characters" :key="item.ID">
-                    <span v-if="i == this.$store.state.activeCharacterID" class="dropdown-item active">
-                      <b>{{ item.lodestoneData.Character.Name }}</b>
-                      – {{ item.lodestoneData.Character.World }}
-                      <i class="fa-fw fal fa-check"></i>
-                    </span>
-                    <a v-else class="dropdown-item" href="#" @click="changeActiveCharacter(i)">
-                      <b>{{ item.lodestoneData.Character.Name }}</b>
-                      – {{ item.lodestoneData.Character.World }}
-                    </a>
-                  </li>
-                  <li><hr class="dropdown-divider" /></li>
-                </div>
+                <!-- Active character -->
+                <li>
+                  <h6 class="dropdown-header">{{ $t("navbar.changeActiveCharacter") }}</h6>
+                </li>
+                <li v-if="!this.$store.getters.hasCharacter">
+                  <span class="dropdown-item disabled">{{ $t("navbar.noCharacters") }}</span>
+                </li>
+                <li v-for="(item, i) of this.$store.getters.characters" :key="item.ID">
+                  <span v-if="i == this.$store.state.activeCharacterID" class="dropdown-item active">
+                    <b>{{ item.lodestoneData.Character.Name }}</b>
+                    – {{ item.lodestoneData.Character.World }}
+                    <i class="fa-fw fal fa-check"></i>
+                  </span>
+                  <a v-else class="dropdown-item" href="#" @click="changeActiveCharacter(i)">
+                    <b>{{ item.lodestoneData.Character.Name }}</b>
+                    – {{ item.lodestoneData.Character.World }}
+                  </a>
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+
+                <!-- Discord username & sign-out -->
                 <li>
                   <h6 class="dropdown-header">
                     {{ this.$store.getters.discordUsername }}
@@ -240,60 +286,19 @@
                 </li>
                 <li>
                   <a class="dropdown-item" href="#" @click="signOut">
-                    <i class="fa-fw fal fa-power-off"></i> {{ $t("page.signOut") }}
+                    <i class="fa-fw fas fa-power-off"></i> {{ $t("page.signOut") }}
                   </a>
                 </li>
+
                 <li><hr class="dropdown-divider" /></li>
+
+                <!-- Settings -->
                 <li>
-                  <router-link to="/settings" class="dropdown-item" @click="collapseNav">
-                    <i class="fa-fw fal fa-cog"></i> {{ $t("page.settings") }}
+                  <router-link to="/settings/" class="dropdown-item" @click="collapseNav">
+                    <i class="fa-fw fas fa-cog"></i> {{ $t("page.settings") }}
                   </router-link>
                 </li>
               </ul>
-            </li>
-          </ul>
-        </div>
-
-        <div v-else class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="nav navbar-nav me-auto mb-2 mb-lg-0" id="nav-tab" role="tablist">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                id="nav-profile-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#nav-profile"
-                type="button"
-                role="tab"
-                @click="collapseNav"
-              >
-                Profile
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                id="nav-duties-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#nav-duties"
-                type="button"
-                role="tab"
-                @click="collapseNav"
-              >
-                Encounters
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                id="nav-questlines-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#nav-questlines"
-                type="button"
-                role="tab"
-                @click="collapseNav"
-              >
-                Questlines
-              </a>
             </li>
           </ul>
         </div>
@@ -301,85 +306,33 @@
     </nav>
   </header>
 
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCountdowns">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasCountdownsLabel">{{ $t("page.countdowns") }}</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-      <div v-for="item in news.countdowns" :key="item.title">
-        <h3>{{ item.title }}</h3>
-        <small v-if="item.end && new Date() / 1000 > item.end" class="text-danger">This event has ended </small>
-        <small v-else-if="item.start && new Date() / 1000 < item.start" class="text-muted">
-          Available in
-          <b class="text-info">
-            <abbr :title="dateFormat(item.start)">{{ timeLeft(item.start) }}</abbr>
-          </b>
-        </small>
-        <small v-else-if="item.end" class="text-muted">
-          Ending in
-          <b class="text-success">
-            <abbr :title="dateFormat(item.end)">{{ timeLeft(item.end) }}</abbr>
-          </b>
-        </small>
-        <small v-else class="text-success">Currently available</small>
-        <br v-if="item.description || item.url" />
-        <p v-if="item.description" v-html="item.description"></p>
-        <span v-if="item.url">
-          <a class="text-reset" :href="item.url" target="_blank" rel="noopener noreferrer">More details</a>
-          <i class="fa-fw fal fa-external-link"></i>
-        </span>
-        <br /><br /><br />
-      </div>
-    </div>
-  </div>
+  <!-- Countdowns off-canvas -->
+  <TheCountdownsCanvas />
 
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasUpdates">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasUpdatesLabel">{{ $t("page.newsUpdates") }}</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-      <div v-for="item in news.news" :key="item.ID">
-        <h3>{{ item.title }}</h3>
-        <small class="text-muted">
-          Posted on <b class="text-success">{{ item.published }}</b>
-        </small>
-        <br />
-        <p v-html="item.content"></p>
-        <br />
-      </div>
-    </div>
-  </div>
+  <!-- News off-canvas -->
+  <TheNewsCanvas />
 </template>
 
 <style lang="scss">
 nav {
   margin-bottom: 10px;
+  background-color: var(--bs-dark);
+  border-bottom: 1px solid var(--bs-gray-800);
 
   .nav-link.router-link-exact-active {
-    color: #41b883 !important;
+    color: var(--bs-primary-color) !important;
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 7px;
   }
 }
 
-.night nav {
-  border-bottom: 1px solid #333333;
-}
-
-span.nav-link:hover {
-  color: rgba(255, 255, 255, 0.75) !important;
-  text-decoration: none !important;
-}
-
 .navbar-dark .navbar-nav .nav-link {
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--bs-grey-300);
 }
 
 .navbar-dark .navbar-nav .nav-link:hover {
-  color: rgba(255, 255, 255, 1);
+  color: var(--bs-white);
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 7px;
@@ -396,12 +349,12 @@ span.nav-link:hover {
 
 .dropdown-menu-dark .dropdown-item.active,
 .dropdown-menu-dark .dropdown-item:focus {
-  background-color: #262b30;
+  background-color: var(--bs-dark);
 }
 
 .offcanvas {
-  background-color: #1c2024;
-  color: #ddd;
+  background-color: var(--bs-dark);
+  color: var(--bs-body-color);
 }
 
 .offcanvas-header .btn-close {
@@ -412,6 +365,8 @@ span.nav-link:hover {
 </style>
 
 <script>
+import TheNewsCanvas from "@/components/TheNewsCanvas.vue";
+import TheCountdownsCanvas from "@/components/TheCountdownsCanvas.vue";
 import news from "@/assets/news.json";
 import { updateSettings } from "@/utilities/backend.js";
 
@@ -420,19 +375,11 @@ export default {
   data() {
     return {
       news: news,
-      now: new Date() / 1000,
     };
   },
-  mounted() {
-    this.$nextTick(function () {
-      this.now = new Date() / 1000;
-    });
-    this.intervalFunction = setInterval(() => {
-      this.now = new Date() / 1000;
-    }, 60 * 1000);
-  },
-  unmounted() {
-    clearInterval(this.intervalFunction);
+  components: {
+    TheNewsCanvas,
+    TheCountdownsCanvas,
   },
   methods: {
     changeLanguage(lang) {
@@ -471,20 +418,6 @@ export default {
       settings.latestCountdownSeen = news.latestCountdownID;
       this.$store.commit("setSettings", settings);
       updateSettings(settings);
-    },
-    timeLeft(timestamp) {
-      let diff = timestamp - this.now;
-      let days = Math.floor(diff / (1 * 60 * 60 * 24));
-      let hours = Math.floor(diff / (1 * 60 * 60));
-      let minutes = Math.floor(diff / (1 * 60));
-
-      if (days > 0) return days + "d " + (hours - days * 24) + "h";
-      else if (hours > 0) return hours + "h " + (minutes - hours * 60) + "m";
-      else return minutes + "m";
-    },
-    dateFormat(timestamp) {
-      let date = new Date(timestamp * 1000);
-      return date;
     },
   },
 };

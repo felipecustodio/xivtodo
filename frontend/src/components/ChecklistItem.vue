@@ -1,7 +1,7 @@
 <template>
   <li
     v-if="showHidden || (!itemCopy.hidden && !showHidden)"
-    class="list-group-item"
+    class="list-group-item fw-medium"
     :class="{
       'drag-hovered': dragHovered,
       'list-group-item-action': this.$store.getters.hasCharacter,
@@ -22,27 +22,32 @@
           'text-success': itemCopy.checked,
         }"
       ></i>
-      <span :class="{ 'checklist-checked': itemCopy.checked }">{{ item.name }}</span>
+      <span
+        :class="{
+          'text-decoration-line-through': itemCopy.checked,
+          'text-success': itemCopy.checked,
+        }"
+      >{{ item.name }}</span>
       <!-- <br /><small class="text-muted">Token and gear coffer lockout for the Savage raid</small> -->
     </span>
 
     <span v-if="showHidden" class="d-flex justify-content-between align-items-center">
       <span :class="{ 'text-muted': itemCopy.hidden }">
-        <i class="fa-fw fad fa-grip-lines cursor-grab d-none d-md-inline" :title="$t('shared.dragToReorder')"></i>
+        <i class="fa-fw fas fa-grip-lines cursor-grab d-none d-md-inline" :title="$t('shared.dragToReorder')"></i>
         &nbsp;
         {{ item.name }}
       </span>
       <span v-if="showHidden">
         <a v-if="item.custom" class="text-danger cursor-pointer tt" @click="remove">
-          <i class="fa-fw fad fa-trash-alt"></i>
+          <i class="fa-fw fas fa-trash-alt"></i>
           <span class="tt-text">{{ $t("shared.remove") }}</span>
         </a>
         <a v-else-if="itemCopy.hidden" class="text-secondary cursor-pointer tt" @click="hid">
-          <i class="fa-fw fad fa-eye-slash"></i>
+          <i class="fa-fw fas fa-eye-slash"></i>
           <span class="tt-text">{{ $t("shared.show") }}</span>
         </a>
         <a v-else-if="!itemCopy.hidden" class="text-success cursor-pointer tt" @click="hid">
-          <i class="fa-fw fad fa-eye"></i>
+          <i class="fa-fw fas fa-eye"></i>
           <span class="tt-text">{{ $t("shared.hide") }}</span>
         </a>
       </span>
@@ -51,29 +56,8 @@
 </template>
 
 <style lang="scss">
-.checklist-checked {
-  color: #53b462;
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
-}
-
 .drag-hovered {
-  border-top: 2px solid #41b883 !important;
-}
-
-.cursor-grab {
-  cursor: grab;
-}
-
-.night {
-  .list-group-item-action:focus,
-  .list-group-item-action:hover {
-    background-color: #212529 !important;
-  }
-
-  .list-group-item-action:active {
-    background-color: #1c2024 !important;
-  }
+  border-top: 2px solid var(--bs-primary-color) !important;
 }
 </style>
 

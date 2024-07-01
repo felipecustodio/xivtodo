@@ -1,9 +1,12 @@
 <template>
-  <footer class="footer d-flex justify-content-between mt-auto py-2 px-3 bg-light user-select-none">
-    <div class="footer-copyrights text-muted my-auto d-none d-lg-block col-4">
+  <footer class="footer d-flex justify-content-between mt-auto py-2 px-3 bg-light user-select-none" data-bs-theme="night">
+    <!-- Left-side info -->
+    <div class="footer-copyrights text-muted my-auto d-none d-xl-block col-4">
       {{ $t("footer.trademark") }}<br />
       {{ $t("footer.copyright") }}
     </div>
+
+    <!-- Center branding and links -->
     <div class="flex-fill text-center text-muted">
       <img src="@/assets/img/brand.png" alt="XIV ToDo branding" />
       <br />
@@ -11,11 +14,11 @@
         <small>{{ $t("page.home") }}</small>
       </router-link>
       ·
-      <router-link to="/help">
+      <router-link to="/help/">
         <small>{{ $t("page.help") }}</small>
       </router-link>
       ·
-      <router-link to="/privacy">
+      <router-link to="/privacy/">
         <small>{{ $t("page.privacy") }}</small>
       </router-link>
       ·
@@ -31,11 +34,13 @@
         <small>{{ $t("page.twitter") }}</small>
       </a>
       <br />
-      <a href="https://ko-fi.com/olivi_eh" target="_blank" rel="noopener noreferrer">
-        <small>{{ $t("page.donate") }} <i class="fa-fw fal fa-heart"></i></small>
+      <a href="https://ko-fi.com/olivi_eh" target="_blank" rel="noopener noreferrer" class="fw-bolder">
+        <small>{{ $t("page.donate") }} <i class="fa-fw fas fa-heart"></i></small>
       </a>
     </div>
-    <div class="footer-copyrights text-muted text-end my-auto d-none d-lg-block col-4">
+
+    <!-- Right-side info -->
+    <div class="footer-copyrights text-muted text-end my-auto d-none d-xl-block col-4">
       {{ $t("footer.buildVersion", { buildNum: this.$store.state.env.VUE_APP_BUILD_NUM }) }}<br />
       {{ $t("footer.buildDate", { buildDate: this.$store.state.env.VUE_APP_BUILD_DATE }) }}
     </div>
@@ -43,28 +48,17 @@
 </template>
 
 <style lang="scss">
-footer {
-  a,
-  a:focus {
-    color: #6c757d;
-  }
-
-  a:hover {
-    color: #222222;
-  }
-}
-
-.night footer {
-  background-color: #212529 !important;
-  border-top: 1px solid #333333;
+.footer {
+  background-color: var(--bs-dark) !important;
+  border-top: 1px solid var(--bs-gray-800);
 
   a,
   a:focus {
-    color: #6c757d;
+    color: var(--bs-secondary-color);
   }
 
   a:hover {
-    color: #eeeeee;
+    color: var(--bs-body-color);
   }
 }
 
@@ -81,12 +75,10 @@ footer img {
   margin-bottom: 5px;
   margin-top: 5px;
   filter: brightness(70%) grayscale(100%);
-  -webkit-filter: brightness(70%) grayscale(100%);
 }
 
 footer img:hover {
   filter: brightness(100%) grayscale(0%);
-  -webkit-filter: brightness(100%) grayscale(0%);
 }
 </style>
 
