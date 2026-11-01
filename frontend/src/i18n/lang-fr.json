@@ -19,17 +19,20 @@
     "privacy": "Confidentialité",
     "contact": "Contact",
     "donate": "Soutenez XIV ToDo",
-    "twitter": "Twitter",
+    "bluesky": "Bluesky",
     "github": "GitHub",
     "discord": "Discord",
     "countdowns": "Compte à rebours",
     "newsUpdates": "Nouvelles et mises à jour",
-    "language": "Langue"
+    "language": "Langue",
+    "sandbox": "Sandbox"
   },
   "navbar": {
     "changeActiveCharacter": "Personnage actif",
     "preferredLanguage": "Langue préférée",
-    "feedback": "Commentaires"
+    "feedback": "Commentaires",
+    "settingsAndCharacters": "Paramètres et personnages",
+    "noCharacters": "Ajoutez vos personnages dans les paramètres"
   },
   "pageHeader": {
     "ofCharacter": "de {characterName}",
@@ -44,8 +47,12 @@
     "signingUnknownError": "XIV ToDo n'a pas pu accéder à Discord. Veuillez réessayer ultérieurement ou consulter <a href='https://twitter.com/XIVToDo' class='alert-link' target='_blank' rel='noopener noreferrer'>Twitter</a> ou <a href='https://discord.gg/zfzhKhG3zj' class='alert-link' target='_blank' rel='noopener noreferrer'>Discord</a> pour obtenir une mise à jour sur l'état de la situation.",
     "updatingCharacter": "Mise à jour des données du personnage, cela peut prendre une minute...",
     "achievementsNotPublic": "Les hauts faits pour ce personnage ne sont pas public dans Lodestone.",
-    "notSignedIn": "Aucun personnage trouvé. Vous pouvez <a href='{url}' class='alert-link'>vous connecter avec Discord</a> pour les ajouter.",
-    "noCharacters": "Aucun caractère trouvé. Vous pouvez ajouter vos personnages dans les <a href='/settings' class='alert-link'>Paramètres</a>."
+    "profileNotPublic": "Les hauts faits pour ce personnage ne sont pas public dans Lodestone.",
+    "notSignedIn": "Aucun personnage trouvé. <a href='{url}' class='alert-link'>Connectez-vous avec Discord</a> pour ajouter et suivre vos personnages.",
+    "noCharacters": "Aucun caractère trouvé. Vous pouvez ajouter vos personnages dans les <a href='/settings' class='alert-link'>Paramètres</a>.",
+    "lodestoneMaintenance": "There is currently a Lodestone maintenance ending in approximately {timeRemaining}.",
+    "lodestoneMaintenanceSoon": "An upcoming Lodestone maintenance is starting in {timeRemaining}.",
+    "lodestoneMaintenanceNotUpdated": "La maintenance de Lodestone est terminée, mais XIV ToDo n'est pas encore à jour. Merci de bien vouloir patienter !"
   },
   "footer": {
     "trademark": "FINAL FANTASY est une marque déposée de SQUARE ENIX holdings Co, Ltd.",
@@ -119,14 +126,14 @@
       "text": "Les tâches quotidiennes et hebdomadaires peuvent être personnalisées en cliquant sur le bouton {0} en haut à droite de la page {1} . À partir de là, vous pouvez ajouter des entrées personnalisées ainsi que cacher les entrées que vous ne voulez pas voir. Pour arrêter la personnalisation, il vous suffit de cliquer à nouveau sur le bouton {2}."
     },
     "encounterQuestlineCompletion": {
-      "header": "Encounter and questline completion",
-      "text1": "Encounter and questlines are automatically marked as cleared once the relevant achievements have been obtained. Since encounters or questlines don't always map directly to in-game achievement, automated completion tracking is not always fully accurate. You can correct the tracking by manually marking the encounter or questline as cleared.",
-      "text2": "XIV ToDo takes in-game achievements data from the Lodestone, which can take a few hours to be up-to-date. Once a new in-game achievement is obtained, it may take up to 48 hours for the relevant encounter or questline to be marked as complete in XIV ToDo. You can also manually initiate a refresh of the data from the {0} page.",
-      "textState": "The following are the four possible statuses for each encounter and questline:",
-      "stateClearedVerified": "Your active character has cleared this encounter (verified).",
-      "stateCleared": "Your active character has cleared this encounter.",
-      "stateUnknown": "Your active character's current achievements cannot determine encounter clear.",
-      "stateNotCleared": "Your active character has not cleared this encounter yet."
+      "header": "Complétion des rencontres et des quêtes",
+      "text1": "Les rencontres et les quêtes sont automatiquement marquées comme étant complétées une fois que les succès correspondants ont été obtenus. Étant donné que certaines rencontres et quêtes ne sont pas associées à des succès spécifiques, il n'est pas toujours possible d'assurer un suivi automatique concernant leur complétion. Vous pouvez corriger cela en les marquant manuellement comme étant complétées.",
+      "text2": "XIV ToDo se base sur les données des succès enregistrés sur Lodestone, qui prends généralement plusieurs heures avant de se mettre à jour. Une fois qu'un nouveau succès a été obtenu en jeu, la rencontre ou la quête correspondante peut donc mettre jusqu'à 48 heures avant d'être notée comme étant complétée sur XIV ToDo. Vous pouvez demander manuellement un rafraîchissement de vos données depuis la page {0}.",
+      "textState": "Voici les quatre statuts possibles pour chaque mission et quête :",
+      "stateClearedVerified": "Votre personnage actif a achevé cette mission (vérifié).",
+      "stateCleared": "Votre personnage actif a achevé cette mission.",
+      "stateUnknown": "Les succès de votre personnage actif ne permettent pas de déterminer l'achèvement de la mission.",
+      "stateNotCleared": "Votre personnage actif n'a pas encore achevé cette mission."
     },
     "otherQuestions": {
       "header": "Autres questions",
@@ -145,7 +152,6 @@
     "cityState": "Cité-État",
     "grandCompany": "Grande compagnie",
     "playingSince": "Joueur depuis",
-    "playingSinceAlt": "Peut ne pas être exact pour les personnages de FFXIV 1.0",
     "achievements": "Hauts faits",
     "tanks": "Tank",
     "healers": "Soigneur",
@@ -169,12 +175,14 @@
       "nin": "Ninja",
       "sam": "Samouraï",
       "rpr": "Faucheur",
+      "vpr": "Rôdeur vipère",
       "brd": "Barde",
       "mch": "Machiniste",
       "dnc": "Danseur",
       "blm": "Mage noir",
       "smn": "Invocateur",
       "rdm": "Mage rouge",
+      "pct": "Pictomancien",
       "blu": "Mage bleu",
       "crp": "Menuisier",
       "bsm": "Forgeron",
@@ -220,8 +228,8 @@
     "sideStoryQuests": "Quêtes annexes",
     "encounterQuests": "Quêtes de mission",
     "relicQuests": "Saga des armes légendaires",
-    "tribalQuests": "Quêtes tribales",
-    "alliedTribalQuests": "Quêtes des tribus alliées",
+    "tribalQuests": "Quêtes des peuples alliés",
+    "alliedTribalQuests": "Quêtes des peuples alliés",
     "customDeliveryQuests": "Quêtes liées aux commandes spéciales",
     "jobQuests": "Quêtes de job",
     "combatJobQuests": "Quêtes de job : combattants",
@@ -229,8 +237,10 @@
     "crafterJobQuests": "Quêtes de classe : artisans",
     "roleQuestsShB": "Quêtes de rôle (ShB)",
     "roleQuestsEW": "Quêtes de rôle (EW)",
+    "roleQuestsDT": "Quêtes de rôle (DT)",
     "crystallineMeanQuests": "Quêtes de classe : halle du Juste",
-    "studiumDeliveryQuests": "Quêtes de classe : académie de magie de Sharlayan"
+    "studiumDeliveryQuests": "Quêtes de classe : académie de magie de Sharlayan",
+    "wachumeqimeqiDeliveryQuests": "Quêtes de classe : bazar aux Mille Perles"
   },
   "challenges": {
     "deepDungeons": "Donjons sans fonds",
@@ -240,19 +250,26 @@
     "hohSolo": "Pilier des Cieux (solo)",
     "eo": "Eurêka Orthos",
     "eoSolo": "Eurêka Orthos (solo)",
+    "pt": "Le Sanctuaire des pèlerins",
+    "ptSolo": "Le Sanctuaire des pèlerins (solo)",
     "exploration": "Exploration",
     "exploratoryMissions": "Missions d'exploration",
     "sightseeingLogs": "Carnet d'exploration",
     "miscellaneous": "Divers",
     "sharedFateShB": "ALÉA (ShB)",
     "sharedFateEW": "ALÉA (EW)",
+    "sharedFateDT": "ALÉA (DT)",
     "bozjanSouthernFront": "Front sud de Bozja",
     "zadnor": "Hauts plateaux de Zadnor",
+    "occultCrescent": "Occult Crescent",
     "variantDungeons": "Donjons à embranchements",
     "treasureHuntClears": "Chasse aux trésors",
     "trusts": "Adjuration",
     "islandSanctuary": "Félicité insulaire",
     "achievementFates": "ALÉA de défi",
+    "mentorStatus": "Mentor Status",
+    "mentorBattle": "Battle Mentor",
+    "mentorTrade": "Trade Mentor",
     "blueMage": "Mage bleu",
     "blueARR": "Des bleus (ARR)",
     "blueHW": "Des bleus (HW)",
@@ -297,15 +314,21 @@
       "hint": "Préférence concernant les spoilers potentiels."
     },
     "patchNumbers": {
-      "label": "Patch numbers",
-      "option0": "Show patch numbers for blurred out content",
-      "option1": "Show patch numbers for non-completed content",
-      "option2": "Always show patch numbers",
-      "hint": "Preference in showing patch numbers for content."
+      "label": "Numéros de correctifs",
+      "option0": "Afficher les numéros de correctifs pour le contenu flouté",
+      "option1": "Afficher les numéros de correctifs pour le contenu non complété",
+      "option2": "Toujours afficher les numéros de correctifs",
+      "hint": "Préférence dans l'affichage des numéros de correctifs pour le contenu."
+    },
+    "theme": {
+      "label": "Thème",
+      "option0": "Nuit",
+      "option1": "Jour",
+      "hint": "Préférence dans l'apparence du site."
     },
     "updateSettings": "Mettre à jour les paramètres",
-    "characterNotFound": "Character not in Lodestone",
-    "characterNotFoundAlt": "This character does not exist in Lodestone. If you recently transfered world, try updating again later",
+    "characterNotFound": "Personnage non dans Lodestone",
+    "characterNotFoundAlt": "Ce personnage n'existe pas dans Lodestone. Si vous avez récemment transféré de monde, réessayez de le mettre à jour plus tard",
     "achievementsNotPublic": "Les hauts faits ne sont pas public",
     "achievementsNotPublicAlt": "Les hauts faits pour ce personnage ne sont pas public dans Lodestone",
     "message": {
@@ -314,7 +337,7 @@
       "settingsUpdateUnknownError": "Impossible de mettre à jour les paramètres. Veuillez réessayer plus tard.",
       "characterAdded": "Le personnage <b>{name}</b> a été ajouté ! Vous pouvez maintenant accéder à votre <a href='/profile' class='alert-link'>profil</a> et à toutes les pages de complétion du personnage.",
       "characterAddedNotPublic": "Le personnage <b>{name}</b> a été ajouté, mais leurs hauts faits ne sont pas public. Vous pouvez modifier ce paramètre <a href='https://fr.finalfantasyxiv.com/lodestone/my/setting/account/' class='alert-link' target='_blank' rel='noopener noreferrer'>ici</a>, puis mettre à jour les données du personnage.",
-      "characterAddNotFoundError": "Le profil de personnage que vous avez saisi n'existe pas.",
+      "characterAddNotFoundError": "Le profil de personnage que vous avez entré n'existe pas, ou son profil de personnage est caché dans Lodestone.",
       "characterAddClientError": "Impossible d'ajouter le personnage. Vous avez peut-être déjà ajouté ce personnage, ou avez atteint la limite de personnages.",
       "characterAddServerError": "Impossible d'atteindre Lodestone. Il peut y avoir une maintenance en cours. Veuillez réessayer plus tard.",
       "characterRemoveConfirm": "Êtes-vous sûr de vouloir supprimer {name} ?",
@@ -334,12 +357,14 @@
     "updatingWait": "Mise à jour en cours, veuillez patienter...",
     "addingWait": "Ajout en cours, veuillez patienter...",
     "portraitAlt": "Portrait de votre personnage",
+    "moreDetails": "Plus d'infos",
     "expansion": {
       "arr": "A Realm Reborn",
       "hw": "Heavensward",
       "sb": "Stormblood",
       "shb": "Shadowbringers",
-      "ew": "Endwalker"
+      "ew": "Endwalker",
+      "dt": "Dawntrail"
     },
     "time": {
       "daysShort": "{days}j",
@@ -350,7 +375,12 @@
       "daysAgo": "il y a {days} jours",
       "hoursAgo": "il y a {hours} heures",
       "minutesAgo": "il y a {minutes} minutes",
-      "coupleSecondsAgo": "il y a quelques instants"
+      "coupleSecondsAgo": "il y a quelques instants",
+      "currentlyAvailable": "En cours",
+      "eventEnded": "Cet événement est terminé",
+      "available": "Disponible",
+      "ending": "Fini",
+      "starting": "Commence"
     }
   }
 }

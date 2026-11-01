@@ -23,7 +23,7 @@ func SettingsHandler() http.Handler {
 		}
 
 		settings := models.Settings{}
-		err := json.NewDecoder(r.Body).Decode(&settings)
+		err := json.NewDecoder(http.MaxBytesReader(w, r.Body, utils.MaxBodyBytes)).Decode(&settings)
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			log.Printf("failed to decode settings: %v", err)
@@ -72,6 +72,10 @@ func validateSettings(userData *models.User, payload *models.Settings) error {
 
 	if payload.PatchNumsOption < 0 || payload.PatchNumsOption > 2 {
 		return errors.New("PatchNumsOption invalid, must be between [0-2]")
+	}
+
+	if payload.ThemeOption < 0 || payload.ThemeOption > 1 {
+		return errors.New("ThemeOption invalid, must be between [0-1]")
 	}
 
 	return nil

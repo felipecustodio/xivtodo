@@ -1,5 +1,5 @@
 ## Build
-FROM golang:1.21-buster AS build
+FROM golang:1.27-trixie AS build
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN go mod download
 RUN go build -o /xivtodo-server
 
 ## Deploy
-FROM gcr.io/distroless/base-debian10
+FROM gcr.io/distroless/base-debian13
 
 WORKDIR /
 

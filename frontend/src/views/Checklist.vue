@@ -1,173 +1,160 @@
 <template>
-  <div class="container">
-    <h1 class="d-flex align-items-end">
-      <span class="me-auto">
-        {{ $t("page.checklist") }}
-        <span v-if="this.$store.getters.hasCharacter" class="fs-3 fw-lighter">
-          {{ $t("pageHeader.forCharacter", { characterName: this.$store.getters.character.Name }) }}
-          <div v-if="this.$store.getters.activeCharacterOutOfDate" class="text-info fs-6">
-            <div class="spinner-border spinner-border-sm" role="status"></div>
-            {{ $t("message.updatingCharacter") }}
-          </div>
+  <PageHeader title="page.checklist" subtitle="pageHeader.forCharacter">
+    <button
+      v-if="this.appStore.hasCharacter"
+      type="button"
+      class="btn float-end"
+      :class="{ 'btn-outline-primary': !showHidden, 'btn-primary': showHidden }"
+      @click="showHidden = !showHidden"
+    >
+      <i class="fa-regular fa-pen-to-square"></i>
+      {{ $t("shared.customize") }}
+    </button>
+  </PageHeader>
+
+  <h2>{{ $t("checklist.thingsToDo") }}</h2>
+  <div class="row">
+    <div class="col-md">
+      <h3>{{ $t("checklist.weeklies") }}</h3>
+      <span class="text-muted">
+        {{ $t("checklist.untilReset", { time: weeklyReset }) }}
+      </span>
+
+      <div v-if="showHidden" class="input-group mt-3 mb-2">
+        <input v-model="customWeekly" type="text" class="form-control" :placeholder="$t('checklist.customWeekly')" />
+        <button
+          class="btn btn-outline-primary"
+          :class="{ disabled: !customWeekly }"
+          type="button"
+          id="button-addon2"
+          @click="addCustomWeekly"
+        >
+          {{ $t("checklist.addCustomWeekly") }}
+        </button>
+      </div>
+
+      <ul class="list-group list-group-flush">
+        <ChecklistItem
+          v-for="item of [...this.appStore.checklistWeeklies]"
+          :key="item.name"
+          :item="item"
+          type="weekly"
+          :showHidden="showHidden"
+          :draggable="showHidden"
+          @dragstart="startDrag($event, item)"
+          @dragend="endDrag()"
+          @dragleave="endDrag()"
+          @drop="onDrop($event, item)"
+          @dragover="onDragOver($event, item)"
+          @dragover.prevent
+          @dragenter.prevent
+          :dragHovered="item.name == this.draggedOverName"
+        />
+      </ul>
+      <br />
+    </div>
+
+    <div class="col-md order-first order-md-last">
+      <h3>{{ $t("checklist.dailies") }}</h3>
+      <span class="text-muted">
+        {{ $t("checklist.untilReset", { time: dailyReset }) }}
+      </span>
+
+      <div v-if="showHidden" class="input-group mt-3 mb-2">
+        <input v-model="customDaily" type="text" class="form-control" :placeholder="$t('checklist.customDaily')" />
+        <button
+          class="btn btn-outline-primary"
+          :class="{ disabled: !customDaily }"
+          type="button"
+          id="button-addon2"
+          @click="addCustomDaily"
+        >
+          {{ $t("checklist.addCustomDaily") }}
+        </button>
+      </div>
+
+      <ul class="list-group list-group-flush">
+        <ChecklistItem
+          v-for="item of [...this.appStore.checklistDailies]"
+          :key="item.ID"
+          :item="item"
+          type="daily"
+          :showHidden="showHidden"
+          :draggable="showHidden"
+          @dragstart="startDrag($event, item)"
+          @dragend="endDrag()"
+          @dragleave="endDrag()"
+          @drop="onDrop($event, item)"
+          @dragover="onDragOver($event, item)"
+          @dragover.prevent
+          @dragenter.prevent
+          :dragHovered="item.name == this.draggedOverName"
+        />
+      </ul>
+      <br />
+      <span v-if="this.appStore.checklistLenHiddens > 0" class="d-none d-md-block">
+        <span class="text-muted float-end">
+          {{ $t("checklist.hiddenTasks", this.appStore.checklistLenHiddens) }}<br /><br />
         </span>
       </span>
-      <button
-        v-if="this.$store.getters.hasCharacter"
-        type="button"
-        class="btn float-end"
-        :class="{ 'btn-outline-success': !showHidden, 'btn-success': showHidden }"
-        @click="showHidden = !showHidden"
-      >
-        {{ $t("shared.customize") }}
-      </button>
-    </h1>
-    <AlertMsg
-      v-if="!this.$store.getters.isSignedIn"
-      type="normal"
-      :msg="$t('message.notSignedIn', { url: this.$store.state.env.VUE_APP_DISCORD_AUTH_URI })"
-    />
-    <AlertMsg v-else-if="!this.$store.getters.hasCharacter" type="normal" :msg="$t('message.noCharacters')" />
-    <hr />
-    <h2>{{ $t("checklist.thingsToDo") }}</h2>
-    <div class="row">
-      <div class="col-md">
-        <h3>{{ $t("checklist.weeklies") }}</h3>
-        <span class="fw-lighter text-muted">
-          {{ $t("checklist.untilReset", { time: weeklyReset }) }}
-        </span>
-
-        <div v-if="showHidden" class="input-group mt-3 mb-2">
-          <input v-model="customWeekly" type="text" class="form-control" :placeholder="$t('checklist.customWeekly')" />
-          <button
-            class="btn btn-outline-success"
-            :class="{ disabled: !customWeekly }"
-            type="button"
-            id="button-addon2"
-            @click="addCustomWeekly"
-          >
-            {{ $t("checklist.addCustomWeekly") }}
-          </button>
-        </div>
-
-        <ul class="list-group list-group-flush">
-          <ChecklistItem
-            v-for="item of [...this.$store.getters.checklistWeeklies]"
-            :key="item.name"
-            :item="item"
-            type="weekly"
-            :showHidden="showHidden"
-            :draggable="showHidden"
-            @dragstart="startDrag($event, item)"
-            @dragend="endDrag()"
-            @dragleave="endDrag()"
-            @drop="onDrop($event, item)"
-            @dragover="onDragOver($event, item)"
-            @dragover.prevent
-            @dragenter.prevent
-            :dragHovered="item.name == this.draggedOverName"
-          />
-        </ul>
-        <br />
-      </div>
-
-      <div class="col-md order-first order-md-last">
-        <h3>{{ $t("checklist.dailies") }}</h3>
-        <span class="fw-lighter text-muted">
-          {{ $t("checklist.untilReset", { time: dailyReset }) }}
-        </span>
-
-        <div v-if="showHidden" class="input-group mt-3 mb-2">
-          <input v-model="customDaily" type="text" class="form-control" :placeholder="$t('checklist.customDaily')" />
-          <button
-            class="btn btn-outline-success"
-            :class="{ disabled: !customDaily }"
-            type="button"
-            id="button-addon2"
-            @click="addCustomDaily"
-          >
-            {{ $t("checklist.addCustomDaily") }}
-          </button>
-        </div>
-
-        <ul class="list-group list-group-flush">
-          <ChecklistItem
-            v-for="item of [...this.$store.getters.checklistDailies]"
-            :key="item.ID"
-            :item="item"
-            type="daily"
-            :showHidden="showHidden"
-            :draggable="showHidden"
-            @dragstart="startDrag($event, item)"
-            @dragend="endDrag()"
-            @dragleave="endDrag()"
-            @drop="onDrop($event, item)"
-            @dragover="onDragOver($event, item)"
-            @dragover.prevent
-            @dragenter.prevent
-            :dragHovered="item.name == this.draggedOverName"
-          />
-        </ul>
-        <br />
-        <span v-if="this.$store.getters.checklistLenHiddens > 0" class="d-none d-md-block">
-          <span class="text-muted fw-light float-end">
-            {{ $tc("checklist.hiddenTasks", this.$store.getters.checklistLenHiddens) }}<br /><br />
-          </span>
-        </span>
-      </div>
     </div>
-    <div v-if="showHidden || this.$store.getters.checklistAdhocs.length > 0" class="row">
-      <div class="col">
-        <h3>{{ $t("checklist.scratchpad") }}</h3>
-        <span class="fw-lighter text-muted">{{ $t("checklist.scratchpadDesc") }}</span>
+  </div>
+  <div v-if="showHidden || this.appStore.checklistAdhocs.length > 0" class="row">
+    <div class="col">
+      <h3>{{ $t("checklist.scratchpad") }}</h3>
+      <span class="text-muted">{{ $t("checklist.scratchpadDesc") }}</span>
 
-        <div v-if="showHidden" class="input-group mt-3 mb-2">
-          <input v-model="customAdhoc" type="text" class="form-control" :placeholder="$t('checklist.customItem')" />
-          <button
-            class="btn btn-outline-success"
-            :class="{ disabled: !customAdhoc }"
-            type="button"
-            id="button-addon2"
-            @click="addCustomAdhoc"
-          >
-            {{ $t("checklist.addCustomItem") }}
-          </button>
-        </div>
-
-        <ul class="list-group list-group-flush">
-          <ChecklistItem
-            v-for="item of [...this.$store.getters.checklistAdhocs]"
-            :key="item.ID"
-            :item="item"
-            type="adhoc"
-            :showHidden="showHidden"
-            :draggable="showHidden"
-            @dragstart="startDrag($event, item)"
-            @dragend="endDrag()"
-            @dragleave="endDrag()"
-            @drop="onDrop($event, item)"
-            @dragover="onDragOver($event, item)"
-            @dragover.prevent
-            @dragenter.prevent
-            :dragHovered="item.name == this.draggedOverName"
-          />
-          <li v-if="this.$store.getters.checklistAdhocs.length == 0" class="list-group-item">
-            {{ $t("checklist.scratchpadHelp") }}
-          </li>
-        </ul>
-        <br />
+      <div v-if="showHidden" class="input-group mt-3 mb-2">
+        <input v-model="customAdhoc" type="text" class="form-control" :placeholder="$t('checklist.customItem')" />
+        <button
+          class="btn btn-outline-primary"
+          :class="{ disabled: !customAdhoc }"
+          type="button"
+          id="button-addon2"
+          @click="addCustomAdhoc"
+        >
+          {{ $t("checklist.addCustomItem") }}
+        </button>
       </div>
+
+      <ul class="list-group list-group-flush">
+        <ChecklistItem
+          v-for="item of [...this.appStore.checklistAdhocs]"
+          :key="item.ID"
+          :item="item"
+          type="adhoc"
+          :showHidden="showHidden"
+          :draggable="showHidden"
+          @dragstart="startDrag($event, item)"
+          @dragend="endDrag()"
+          @dragleave="endDrag()"
+          @drop="onDrop($event, item)"
+          @dragover="onDragOver($event, item)"
+          @dragover.prevent
+          @dragenter.prevent
+          :dragHovered="item.name == this.draggedOverName"
+        />
+        <li v-if="this.appStore.checklistAdhocs.length == 0" class="list-group-item">
+          {{ $t("checklist.scratchpadHelp") }}
+        </li>
+      </ul>
+      <br />
     </div>
   </div>
 </template>
 
 <script>
-import AlertMsg from "@/components/AlertMsg.vue";
+import PageHeader from "@/components/PageHeader.vue";
 import ChecklistItem from "@/components/ChecklistItem.vue";
 import { updateChecklist } from "@/utilities/backend.js";
 import { swapChecklistItems } from "@/utilities/checklist.js";
+import { useAppStore } from "@/store/app";
 
 export default {
   name: "ChecklistView",
+  setup() {
+    return { appStore: useAppStore() };
+  },
   data() {
     return {
       intervalFunction: null,
@@ -181,7 +168,7 @@ export default {
     };
   },
   components: {
-    AlertMsg,
+    PageHeader,
     ChecklistItem,
   },
   mounted() {
@@ -257,31 +244,31 @@ export default {
       let resetHappened = false;
 
       // Skip this if no active character is set.
-      if (!this.$store.getters.hasCharacter) return;
+      if (!this.appStore.hasCharacter) return;
 
       // Clear checked if past weekly reset time.
-      if (this.$store.getters.checklistNextWeeklyReset < Date.now()) {
+      if (this.appStore.checklistNextWeeklyReset < Date.now()) {
         resetHappened = true;
-        this.$store.commit("checklistNextWeeklyReset", this.weeklyResetTime());
-        let checklistWeeklies = this.$store.getters.checklistWeeklies;
+        this.appStore.setChecklistNextWeeklyReset(this.weeklyResetTime());
+        let checklistWeeklies = this.appStore.checklistWeeklies;
         for (let i = 0; i < checklistWeeklies.length; i++) {
           checklistWeeklies[i].checked = false;
         }
       }
 
       // Clear checked if past daily reset time.
-      if (this.$store.getters.checklistNextDailyReset < Date.now()) {
+      if (this.appStore.checklistNextDailyReset < Date.now()) {
         resetHappened = true;
-        this.$store.commit("checklistNextDailyReset", this.dailyResetTime());
-        let checklistDailies = this.$store.getters.checklistDailies;
+        this.appStore.setChecklistNextDailyReset(this.dailyResetTime());
+        let checklistDailies = this.appStore.checklistDailies;
         for (let i = 0; i < checklistDailies.length; i++) {
           checklistDailies[i].checked = false;
         }
       }
 
       if (resetHappened) {
-        let characterID = this.$store.getters.lodestoneData.Character.ID;
-        updateChecklist(characterID, this.$store.getters.checklistData);
+        let characterID = this.appStore.lodestoneData.Character.ID;
+        updateChecklist(characterID, this.appStore.checklistData);
       }
     },
     addCustomWeekly() {
@@ -292,13 +279,13 @@ export default {
         hidden: false,
       };
 
-      let weeklyChecklist = [...this.$store.getters.checklistWeeklies];
+      let weeklyChecklist = [...this.appStore.checklistWeeklies];
       weeklyChecklist.push(newItem);
-      this.$store.commit("setChecklistWeeklies", weeklyChecklist);
+      this.appStore.setChecklistWeeklies(weeklyChecklist);
 
       this.customWeekly = "";
-      let characterID = this.$store.getters.lodestoneData.Character.ID;
-      updateChecklist(characterID, this.$store.getters.checklistData);
+      let characterID = this.appStore.lodestoneData.Character.ID;
+      updateChecklist(characterID, this.appStore.checklistData);
     },
     addCustomDaily() {
       let newItem = {
@@ -308,13 +295,13 @@ export default {
         hidden: false,
       };
 
-      let dailyChecklist = [...this.$store.getters.checklistDailies];
+      let dailyChecklist = [...this.appStore.checklistDailies];
       dailyChecklist.push(newItem);
-      this.$store.commit("setChecklistDailies", dailyChecklist);
+      this.appStore.setChecklistDailies(dailyChecklist);
 
       this.customDaily = "";
-      let characterID = this.$store.getters.lodestoneData.Character.ID;
-      updateChecklist(characterID, this.$store.getters.checklistData);
+      let characterID = this.appStore.lodestoneData.Character.ID;
+      updateChecklist(characterID, this.appStore.checklistData);
     },
     addCustomAdhoc() {
       let newItem = {
@@ -324,13 +311,13 @@ export default {
         hidden: false,
       };
 
-      let adhocChecklist = [...this.$store.getters.checklistAdhocs];
+      let adhocChecklist = [...this.appStore.checklistAdhocs];
       adhocChecklist.push(newItem);
-      this.$store.commit("setChecklistAdhocs", adhocChecklist);
+      this.appStore.setChecklistAdhocs(adhocChecklist);
 
       this.customAdhoc = "";
-      let characterID = this.$store.getters.lodestoneData.Character.ID;
-      updateChecklist(characterID, this.$store.getters.checklistData);
+      let characterID = this.appStore.lodestoneData.Character.ID;
+      updateChecklist(characterID, this.appStore.checklistData);
     },
     startDrag(evt, item) {
       evt.dataTransfer.dropEffect = "move";
@@ -348,8 +335,8 @@ export default {
 
       swapChecklistItems(fromName, toName);
 
-      let characterID = this.$store.getters.lodestoneData.Character.ID;
-      updateChecklist(characterID, this.$store.getters.checklistData);
+      let characterID = this.appStore.lodestoneData.Character.ID;
+      updateChecklist(characterID, this.appStore.checklistData);
     },
     onDragOver(evt, item) {
       this.draggedOverName = item.name;

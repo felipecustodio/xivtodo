@@ -5,7 +5,7 @@
   </div>
   <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-profile" role="tabpanel">
-      <Profile v-if="this.$store.getters.activeCharacter" />
+      <Profile v-if="this.appStore.activeCharacter" />
       <div v-else class="d-flex align-content-center justify-content-center mt-5">
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="tab-pane fade" id="nav-duties" role="tabpanel">
-      <Encounters v-if="this.$store.getters.activeCharacter" />
+      <Encounters v-if="this.appStore.activeCharacter" />
       <div v-else class="d-flex align-content-center justify-content-center mt-5">
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="tab-pane fade" id="nav-questlines" role="tabpanel">
-      <Questlines v-if="this.$store.getters.activeCharacter" />
+      <Questlines v-if="this.appStore.activeCharacter" />
       <div v-else class="d-flex align-content-center justify-content-center mt-5">
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -33,8 +33,8 @@
 
 <style lang="scss">
 #nav-warning {
-  color: #b5b5b5;
-  background-color: #252a2e;
+  color: #b5b5b5; // @TODO: replace with var
+  background-color: #252a2e; // @TODO: replace with var
   margin-top: -15px;
   margin-bottom: 15px;
 }
@@ -44,6 +44,7 @@
 import Profile from "@/views/Profile.vue";
 import Encounters from "@/views/Encounters.vue";
 import Questlines from "@/views/Questlines.vue";
+import { useAppStore } from "@/store/app";
 
 // this.$route.params.id
 
@@ -53,6 +54,9 @@ export default {
     Profile,
     Encounters,
     Questlines,
+  },
+  setup() {
+    return { appStore: useAppStore() };
   },
 };
 </script>
